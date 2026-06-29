@@ -671,10 +671,10 @@
             <a class="btn-secondary" href="#opencode">Перейти к Opencode</a>
           </div>
           <div class="quick-links">
-            <a href="#codex-step-2">API-ключ</a>
+            <a href="#codex-step-1">API-ключ</a>
             <a href="#vscode-codex">Codex в VS Code</a>
-            <a href="#codex-step-3">config.toml</a>
-            <a href="#codex-step-4">auth.json</a>
+            <a href="#codex-step-4">config.toml</a>
+            <a href="#codex-step-5">auth.json</a>
             <a href="#opencode-config">Конфиг Opencode</a>
             <a href="#after-setup">После настройки</a>
           </div>
@@ -766,6 +766,24 @@
               <div class="step-top">
                 <span class="step-number">1</span>
                 <div class="step-heading">
+                  <h3>Авторизуйтесь через API-ключ</h3>
+                  <p>
+                    Откройте Codex, выберите авторизацию другим способом и введите API-ключ,
+                    предоставленный после покупки.
+                  </p>
+                </div>
+              </div>
+              <div class="step-body">
+                <div class="callout">
+                  После ввода ключа закройте Codex и продолжайте ручную настройку по шагам ниже.
+                </div>
+              </div>
+            </article>
+
+            <article class="step-card" id="codex-step-2">
+              <div class="step-top">
+                <span class="step-number">2</span>
+                <div class="step-heading">
                   <h3>Закройте Codex</h3>
                   <p>Перед настройкой полностью закройте приложение Codex.</p>
                 </div>
@@ -777,9 +795,9 @@
               </div>
             </article>
 
-            <article class="step-card" id="codex-step-2">
+            <article class="step-card" id="codex-step-3">
               <div class="step-top">
-                <span class="step-number">2</span>
+                <span class="step-number">3</span>
                 <div class="step-heading">
                   <h3>Добавьте API-ключ в переменные окружения</h3>
                   <p>
@@ -801,9 +819,9 @@
               </div>
             </article>
 
-            <article class="step-card" id="codex-step-3">
+            <article class="step-card" id="codex-step-4">
               <div class="step-top">
-                <span class="step-number">3</span>
+                <span class="step-number">4</span>
                 <div class="step-heading">
                   <h3>Настройте файл config.toml</h3>
                   <p>
@@ -844,9 +862,9 @@ requires_openai_auth = true</pre>
               </div>
             </article>
 
-            <article class="step-card" id="codex-step-4">
+            <article class="step-card" id="codex-step-5">
               <div class="step-top">
-                <span class="step-number">4</span>
+                <span class="step-number">5</span>
                 <div class="step-heading">
                   <h3>Настройте файл auth.json</h3>
                   <p>
@@ -878,9 +896,9 @@ requires_openai_auth = true</pre>
               </div>
             </article>
 
-            <article class="step-card" id="codex-step-5">
+            <article class="step-card" id="codex-step-6">
               <div class="step-top">
-                <span class="step-number">5</span>
+                <span class="step-number">6</span>
                 <div class="step-heading">
                   <h3>Запустите Codex</h3>
                   <p>После сохранения всех файлов снова откройте Codex и проверьте, что конфигурация загрузилась без ошибок.</p>
@@ -899,11 +917,12 @@ requires_openai_auth = true</pre>
             <span class="toc-label">Шаги Codex</span>
             <a href="#codex-auto">Автоматически</a>
             <a href="#codex-manual">Вручную</a>
-            <a href="#codex-step-1">1. Закрыть Codex</a>
-            <a href="#codex-step-2">2. Переменные окружения</a>
-            <a href="#codex-step-3">3. config.toml</a>
-            <a href="#codex-step-4">4. auth.json</a>
-            <a href="#codex-step-5">5. Запуск Codex</a>
+            <a href="#codex-step-1">1. Авторизация</a>
+            <a href="#codex-step-2">2. Закрыть Codex</a>
+            <a href="#codex-step-3">3. Переменные окружения</a>
+            <a href="#codex-step-4">4. config.toml</a>
+            <a href="#codex-step-5">5. auth.json</a>
+            <a href="#codex-step-6">6. Запуск Codex</a>
           </aside>
         </div>
       </section>
@@ -1698,6 +1717,7 @@ gpt-5.4</pre>
       "Копировать": "Copy",
       "Просмотр содержимого скрипта": "View script contents",
       "Ручная настройка": "Manual setup",
+      "Авторизуйтесь через API-ключ": "Authorize with the API key",
       "Закройте Codex": "Close Codex",
       "Добавьте API-ключ в переменные окружения": "Add the API key to environment variables",
       "Настройте файл config.toml": "Configure config.toml",
@@ -1708,11 +1728,12 @@ gpt-5.4</pre>
       "Шаги Codex": "Codex steps",
       "Автоматически": "Automatic",
       "Вручную": "Manual",
-      "1. Закрыть Codex": "1. Close Codex",
-      "2. Переменные окружения": "2. Environment variables",
-      "3. config.toml": "3. config.toml",
-      "4. auth.json": "4. auth.json",
-      "5. Запуск Codex": "5. Launch Codex",
+      "1. Авторизация": "1. Authorization",
+      "2. Закрыть Codex": "2. Close Codex",
+      "3. Переменные окружения": "3. Environment variables",
+      "4. config.toml": "4. config.toml",
+      "5. auth.json": "5. auth.json",
+      "6. Запуск Codex": "6. Launch Codex",
       "Настройка Codex в VS Code": "Codex Setup in VS Code",
       "Закройте VS Code": "Close VS Code",
       "Откройте папку ~/.codex": "Open the ~/.codex folder",
@@ -1747,24 +1768,26 @@ gpt-5.4</pre>
       "#codex-auto .step-heading p": "If you do not want to edit files manually, open PowerShell and run the command below after inserting your API key.",
       "#codex-auto .callout": "Before running it, you can view the script contents separately. To do that, run the following command in PowerShell.",
       "#codex-manual p": "If you prefer to check and fill in every file yourself, use the step-by-step instructions below.",
-      "#codex-step-1 .step-heading p": "Before setup, fully close the Codex app.",
-      "#codex-step-1 .callout": "If Codex is open while you edit the config files, it may not pick up the new values immediately.",
-      "#codex-step-2 .step-heading p": "Open PowerShell and run two commands. Replace <span class=\"mono\">YOUR-API-KEY</span> with your own key.",
-      "#codex-step-2 .step-body > p": "You do not need to reboot the computer after running these commands.",
-      "#codex-step-3 .step-heading p": "Open the <span class=\"mono\">.codex</span> folder. On Windows, press <span class=\"mono\">Win + R</span>, paste <span class=\"mono\">%userprofile%\\.codex</span>, and press <span class=\"mono\">Enter</span>.",
-      "#codex-step-3 li:nth-child(1)": "If the folder does not open, launch Codex once first so it can create the folder automatically.",
-      "#codex-step-3 li:nth-child(2)": "Find <span class=\"mono\">config.toml</span> and open it in Notepad.",
-      "#codex-step-3 li:nth-child(3)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">config.toml</span>.",
-      "#codex-step-3 li:nth-child(4)": "If Windows asks about changing the file extension, confirm it.",
-      "#codex-step-3 li:nth-child(5)": "Replace the entire file contents with the config below.",
-      "#codex-step-3 .step-body > p": "Save the configuration with <span class=\"mono\">Ctrl + S</span> and close Notepad.",
-      "#codex-step-4 .step-heading p": "In the same <span class=\"mono\">.codex</span> folder, open <span class=\"mono\">auth.json</span>. If the file does not exist, create it manually.",
-      "#codex-step-4 li:nth-child(1)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">auth.json</span>.",
-      "#codex-step-4 li:nth-child(2)": "If Windows warns you about changing the extension, confirm it.",
-      "#codex-step-4 li:nth-child(3)": "Delete all file contents and paste the text below.",
-      "#codex-step-4 li:nth-child(4)": "Replace <span class=\"mono\">YOUR-API-KEY</span> with your API key. Keep the quotes because this is JSON.",
-      "#codex-step-4 .step-body > p": "Then save the file with <span class=\"mono\">Ctrl + S</span> and close Notepad.",
-      "#codex-step-5 .step-heading p": "After saving all files, open Codex again and check that the configuration loads without errors.",
+      "#codex-step-1 .step-heading p": "Open Codex, choose the alternative authorization method, and enter the API key provided after purchase.",
+      "#codex-step-1 .callout": "After entering the key, close Codex and continue with the manual setup steps below.",
+      "#codex-step-2 .step-heading p": "Before setup, fully close the Codex app.",
+      "#codex-step-2 .callout": "If Codex is open while you edit the config files, it may not pick up the new values immediately.",
+      "#codex-step-3 .step-heading p": "Open PowerShell and run two commands. Replace <span class=\"mono\">YOUR-API-KEY</span> with your own key.",
+      "#codex-step-3 .step-body > p": "You do not need to reboot the computer after running these commands.",
+      "#codex-step-4 .step-heading p": "Open the <span class=\"mono\">.codex</span> folder. On Windows, press <span class=\"mono\">Win + R</span>, paste <span class=\"mono\">%userprofile%\\.codex</span>, and press <span class=\"mono\">Enter</span>.",
+      "#codex-step-4 li:nth-child(1)": "If the folder does not open, launch Codex once first so it can create the folder automatically.",
+      "#codex-step-4 li:nth-child(2)": "Find <span class=\"mono\">config.toml</span> and open it in Notepad.",
+      "#codex-step-4 li:nth-child(3)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">config.toml</span>.",
+      "#codex-step-4 li:nth-child(4)": "If Windows asks about changing the file extension, confirm it.",
+      "#codex-step-4 li:nth-child(5)": "Replace the entire file contents with the config below.",
+      "#codex-step-4 .step-body > p": "Save the configuration with <span class=\"mono\">Ctrl + S</span> and close Notepad.",
+      "#codex-step-5 .step-heading p": "In the same <span class=\"mono\">.codex</span> folder, open <span class=\"mono\">auth.json</span>. If the file does not exist, create it manually.",
+      "#codex-step-5 li:nth-child(1)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">auth.json</span>.",
+      "#codex-step-5 li:nth-child(2)": "If Windows warns you about changing the extension, confirm it.",
+      "#codex-step-5 li:nth-child(3)": "Delete all file contents and paste the text below.",
+      "#codex-step-5 li:nth-child(4)": "Replace <span class=\"mono\">YOUR-API-KEY</span> with your API key. Keep the quotes because this is JSON.",
+      "#codex-step-5 .step-body > p": "Then save the file with <span class=\"mono\">Ctrl + S</span> and close Notepad.",
+      "#codex-step-6 .step-heading p": "After saving all files, open Codex again and check that the configuration loads without errors.",
       "#vscode-codex .section-header p": "For the Codex extension in VS Code, there are also two options: automatic setup through PowerShell and manual step-by-step setup through <span class=\"mono\">~/.codex/config.toml</span> and <span class=\"mono\">auth.json</span>.",
       "#vscode-auto .step-heading p": "Open PowerShell, insert your API key, and run the command below.",
       "#vscode-auto .callout": "Before running it, you can view the script contents separately. To do that, run the following command in PowerShell.",
