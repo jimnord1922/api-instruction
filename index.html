@@ -153,6 +153,34 @@
       background: rgba(217, 70, 239, 0.08);
     }
 
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      border: 1px solid rgba(196, 138, 255, 0.24);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.035);
+      backdrop-filter: blur(12px);
+    }
+
+    .language-switch button {
+      min-width: 44px;
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .language-switch button.is-active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-3));
+      color: white;
+    }
+
     h1,
     h2,
     h3,
@@ -622,6 +650,10 @@
         <div class="badge-row">
           <span class="badge">Инструкция по настройке</span>
           <span class="badge developer">Разработчик: jimnord1922</span>
+        </div>
+        <div class="language-switch" aria-label="Выбор языка">
+          <button type="button" class="is-active" data-lang="ru">RU</button>
+          <button type="button" data-lang="en">EN</button>
         </div>
       </div>
 
@@ -1639,6 +1671,231 @@ gpt-5.4</pre>
 
   <script>
     const copyButtons = document.querySelectorAll(".copy-btn");
+    const languageButtons = document.querySelectorAll(".language-switch button");
+    let currentLanguage = "ru";
+
+    const uiLabels = {
+      ru: { copied: "Скопировано", error: "Ошибка" },
+      en: { copied: "Copied", error: "Error" }
+    };
+
+    const textTranslations = new Map(Object.entries({
+      "Инструкция по настройке": "Setup guide",
+      "Разработчик: jimnord1922": "Developer: jimnord1922",
+      "Codex, VS Code и Opencode без лишней путаницы": "Codex, VS Code, and Opencode without the confusion",
+      "Настроить Codex": "Set Up Codex",
+      "Codex в VS Code": "Codex in VS Code",
+      "Перейти к Opencode": "Go to Opencode",
+      "API-ключ": "API key",
+      "Конфиг Opencode": "Opencode config",
+      "После настройки": "After setup",
+      "Поддерживаемые модели": "Supported models",
+      "Файлы настройки": "Config files",
+      "API-переменные": "API variables",
+      "Важно": "Important",
+      "Настройка Codex": "Codex Setup",
+      "Автоматическая настройка": "Automatic setup",
+      "Копировать": "Copy",
+      "Просмотр содержимого скрипта": "View script contents",
+      "Ручная настройка": "Manual setup",
+      "Закройте Codex": "Close Codex",
+      "Добавьте API-ключ в переменные окружения": "Add the API key to environment variables",
+      "Настройте файл config.toml": "Configure config.toml",
+      "Настройте файл auth.json": "Configure auth.json",
+      "Запустите Codex": "Launch Codex",
+      "Навигация": "Navigation",
+      "Разделы сайта": "Site sections",
+      "Шаги Codex": "Codex steps",
+      "Автоматически": "Automatic",
+      "Вручную": "Manual",
+      "1. Закрыть Codex": "1. Close Codex",
+      "2. Переменные окружения": "2. Environment variables",
+      "3. config.toml": "3. config.toml",
+      "4. auth.json": "4. auth.json",
+      "5. Запуск Codex": "5. Launch Codex",
+      "Настройка Codex в VS Code": "Codex Setup in VS Code",
+      "Закройте VS Code": "Close VS Code",
+      "Откройте папку ~/.codex": "Open the ~/.codex folder",
+      "Настройте файл ~/.codex/config.toml": "Configure ~/.codex/config.toml",
+      "Настройте файл ~/.codex/auth.json": "Configure ~/.codex/auth.json",
+      "Запустите VS Code": "Launch VS Code",
+      "Шаги VS Code": "VS Code steps",
+      "1. Закрыть VS Code": "1. Close VS Code",
+      "2. Открыть ~/.codex": "2. Open ~/.codex",
+      "5. Запуск VS Code": "5. Launch VS Code",
+      "Настройка Opencode": "Opencode Setup",
+      "Откройте файл opencode.json": "Open opencode.json",
+      "Вставьте конфиг": "Paste the config",
+      "Задайте ключ и выберите модель": "Set the key and choose a model",
+      "Шаги Opencode": "Opencode steps",
+      "1. Открыть opencode.json": "1. Open opencode.json",
+      "2. Вставить JSON": "2. Paste JSON",
+      "3. Ключ и модель": "3. Key and model",
+      "После настройки": "After setup",
+      "Что проверить после сохранения конфигурации": "What to check after saving the configuration",
+      "Проверьте ключ": "Check the key",
+      "Сверьте пути": "Check the paths",
+      "Перезапустите приложение": "Restart the app",
+      "Итог": "Result",
+      "Разработчик:": "Developer:"
+    }));
+
+    const htmlTranslations = {
+      ".hero-copy > p": "This is a clear step-by-step guide for adding an API key, setting up <span class=\"mono\">config.toml</span>, filling in <span class=\"mono\">auth.json</span>, and choosing the right model in Codex, VS Code, or Opencode.",
+      ".notice.note-card p": "Before you start, fully close Codex. After changing the config files, restarting the app is usually enough. You do not need to reboot the computer.",
+      "#codex .section-header p": "There are two setup options below: automatic setup through PowerShell and manual setup step by step. If you want to do everything yourself, use the instructions below for the <span class=\"mono\">.codex</span> folder files.",
+      "#codex-auto .step-heading p": "If you do not want to edit files manually, open PowerShell and run the command below after inserting your API key.",
+      "#codex-auto .callout": "Before running it, you can view the script contents separately. To do that, run the following command in PowerShell.",
+      "#codex-manual p": "If you prefer to check and fill in every file yourself, use the step-by-step instructions below.",
+      "#codex-step-1 .step-heading p": "Before setup, fully close the Codex app.",
+      "#codex-step-1 .callout": "If Codex is open while you edit the config files, it may not pick up the new values immediately.",
+      "#codex-step-2 .step-heading p": "Open PowerShell and run two commands. Replace <span class=\"mono\">YOUR-API-KEY</span> with your own key.",
+      "#codex-step-2 .step-body > p": "You do not need to reboot the computer after running these commands.",
+      "#codex-step-3 .step-heading p": "Open the <span class=\"mono\">.codex</span> folder. On Windows, press <span class=\"mono\">Win + R</span>, paste <span class=\"mono\">%userprofile%\\.codex</span>, and press <span class=\"mono\">Enter</span>.",
+      "#codex-step-3 li:nth-child(1)": "If the folder does not open, launch Codex once first so it can create the folder automatically.",
+      "#codex-step-3 li:nth-child(2)": "Find <span class=\"mono\">config.toml</span> and open it in Notepad.",
+      "#codex-step-3 li:nth-child(3)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">config.toml</span>.",
+      "#codex-step-3 li:nth-child(4)": "If Windows asks about changing the file extension, confirm it.",
+      "#codex-step-3 li:nth-child(5)": "Replace the entire file contents with the config below.",
+      "#codex-step-3 .step-body > p": "Save the configuration with <span class=\"mono\">Ctrl + S</span> and close Notepad.",
+      "#codex-step-4 .step-heading p": "In the same <span class=\"mono\">.codex</span> folder, open <span class=\"mono\">auth.json</span>. If the file does not exist, create it manually.",
+      "#codex-step-4 li:nth-child(1)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">auth.json</span>.",
+      "#codex-step-4 li:nth-child(2)": "If Windows warns you about changing the extension, confirm it.",
+      "#codex-step-4 li:nth-child(3)": "Delete all file contents and paste the text below.",
+      "#codex-step-4 li:nth-child(4)": "Replace <span class=\"mono\">YOUR-API-KEY</span> with your API key. Keep the quotes because this is JSON.",
+      "#codex-step-4 .step-body > p": "Then save the file with <span class=\"mono\">Ctrl + S</span> and close Notepad.",
+      "#codex-step-5 .step-heading p": "After saving all files, open Codex again and check that the configuration loads without errors.",
+      "#vscode-codex .section-header p": "For the Codex extension in VS Code, there are also two options: automatic setup through PowerShell and manual step-by-step setup through <span class=\"mono\">~/.codex/config.toml</span> and <span class=\"mono\">auth.json</span>.",
+      "#vscode-auto .step-heading p": "Open PowerShell, insert your API key, and run the command below.",
+      "#vscode-auto .callout": "Before running it, you can view the script contents separately. To do that, run the following command in PowerShell.",
+      "#vscode-auto .step-body > p": "After running the command, restarting VS Code is usually enough.",
+      "#vscode-manual p": "If you prefer to edit the files manually, use the step-by-step instructions below.",
+      "#vscode-step-1 .step-heading p": "Before manual setup, fully close VS Code so the extension does not keep the old configuration in memory.",
+      "#vscode-step-1 .callout": "After changing the files, the extension will pick up the settings faster if VS Code was closed.",
+      "#vscode-step-2 .step-heading p": "Open the <span class=\"mono\">~/.codex</span> folder. On Windows, press <span class=\"mono\">Win + R</span>, paste <span class=\"mono\">%userprofile%\\.codex</span>, and press <span class=\"mono\">Enter</span>.",
+      "#vscode-step-2 li:nth-child(1)": "If the folder does not open, launch the Codex extension in VS Code once first.",
+      "#vscode-step-2 li:nth-child(2)": "After the first launch, the folder is usually created automatically.",
+      "#vscode-step-3 .step-heading p": "Find <span class=\"mono\">config.toml</span> in the <span class=\"mono\">~/.codex</span> folder and open it in Notepad.",
+      "#vscode-step-3 li:nth-child(1)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">config.toml</span>.",
+      "#vscode-step-3 li:nth-child(2)": "If Windows asks about changing the file extension, confirm it.",
+      "#vscode-step-3 li:nth-child(3)": "Replace the entire file contents with the config below.",
+      "#vscode-step-3 .step-body > p": "Save the file with <span class=\"mono\">Ctrl + S</span>.",
+      "#vscode-step-4 .step-heading p": "In the same <span class=\"mono\">~/.codex</span> folder, open <span class=\"mono\">auth.json</span>.",
+      "#vscode-step-4 li:nth-child(1)": "If the file does not exist, create a text document and rename it to <span class=\"mono\">auth.json</span>.",
+      "#vscode-step-4 li:nth-child(2)": "If Windows asks about changing the file extension, confirm it.",
+      "#vscode-step-4 li:nth-child(3)": "Delete all file contents and paste the text below.",
+      "#vscode-step-4 li:nth-child(4)": "Replace <span class=\"mono\">YOUR-API-KEY</span> with your API key.",
+      "#vscode-step-4 .step-body > p": "Then save the file with <span class=\"mono\">Ctrl + S</span>.",
+      "#vscode-step-5 .step-heading p": "Open VS Code again and check that the Codex extension starts without errors.",
+      "#opencode .section-header p": "For Opencode, create or open <span class=\"mono\">~/.config/opencode/opencode.json</span>, paste the ready JSON, then set the key through <span class=\"mono\">CVC_API_KEY</span> and choose the required model.",
+      "#opencode-step-1 .step-heading p": "Open <span class=\"mono\">~/.config/opencode/opencode.json</span>. If the file does not exist, create it manually.",
+      "#opencode-config .step-heading p": "Replace the entire file contents with the following JSON config.",
+      "#opencode-step-3 .step-heading p": "Set the key through <span class=\"mono\">CVC_API_KEY</span> and choose the required model from the available list.",
+      "#opencode-step-3 .callout": "If you are on Windows and use PowerShell to start Opencode, you can temporarily set the key with <span class=\"mono\">$env:CVC_API_KEY=\"YOUR-API-KEY\"</span> before launch.",
+      "#after-setup .section-header p": "After saving all changes, restart the program and make sure the key was inserted without mistakes. If everything is done correctly, the service will start working with your API key.",
+      "#after-setup .notes .note-card:nth-child(1) p": "Errors most often happen because of extra spaces, accidentally deleted quotes, or the wrong key being pasted into <span class=\"mono\">auth.json</span>.",
+      "#after-setup .notes .note-card:nth-child(2) p": "For Codex and Codex in VS Code, files are stored in <span class=\"mono\">%userprofile%\\.codex</span>. For Opencode, use <span class=\"mono\">~/.config/opencode/opencode.json</span>.",
+      "#after-setup .notes .note-card:nth-child(3) p": "After editing config files, restarting Codex, VS Code, or Opencode is usually enough. A full system reboot is not required.",
+      "#after-setup .footer-card p:nth-of-type(1)": "If all steps are completed according to the guide, Codex, Codex in VS Code, and Opencode will work through your API key with the saved configuration.",
+      "#after-setup .footer-card p:nth-of-type(2)": "Developer: <strong>jimnord1922</strong>"
+    };
+
+    const codeTranslations = {
+      "#codex-auto-setup": "$env:CVC_API_KEY='YOUR-API-KEY'; iex(irm 'https://cheapvibecode.ru/icw')",
+      "#ps-keys": "[Environment]::SetEnvironmentVariable(\"CVC_API_KEY\", \"YOUR-API-KEY\", \"User\")\n[Environment]::SetEnvironmentVariable(\"OPENAI_API_KEY\", \"YOUR-API-KEY\", \"User\")",
+      "#codex-auth": "{\n  \"auth_mode\": \"apikey\",\n  \"OPENAI_API_KEY\": \"YOUR-API-KEY\"\n}",
+      "#vscode-auto-setup": "$env:CVC_API_KEY='YOUR-API-KEY'; iex(irm 'https://cheapvibecode.ru/iw')",
+      "#vscode-auth": "{\n  \"auth_mode\": \"apikey\",\n  \"OPENAI_API_KEY\": \"YOUR-API-KEY\"\n}",
+      "#opencode-env": "export CVC_API_KEY=YOUR-API-KEY\n\n# Choose a model:\ngpt-5.4"
+    };
+
+    function normalizeText(value) {
+      return value.replace(/\s+/g, " ").trim();
+    }
+
+    function captureOriginals() {
+      Object.keys(htmlTranslations).forEach((selector) => {
+        document.querySelectorAll(selector).forEach((element) => {
+          if (!element.dataset.ruHtml) element.dataset.ruHtml = element.innerHTML;
+        });
+      });
+
+      Object.keys(codeTranslations).forEach((selector) => {
+        document.querySelectorAll(selector).forEach((element) => {
+          if (!element.dataset.ruText) element.dataset.ruText = element.textContent;
+        });
+      });
+
+      document.querySelectorAll("body *").forEach((element) => {
+        if (element.children.length || element.closest("pre") || element.classList.contains("step-number")) return;
+        const key = normalizeText(element.textContent);
+        if (textTranslations.has(key) && !element.dataset.ruText) {
+          element.dataset.ruText = element.textContent;
+        }
+      });
+    }
+
+    function restoreRussian() {
+      document.querySelectorAll("[data-ru-html]").forEach((element) => {
+        element.innerHTML = element.dataset.ruHtml;
+      });
+      document.querySelectorAll("[data-ru-text]").forEach((element) => {
+        element.textContent = element.dataset.ruText;
+      });
+    }
+
+    function applyEnglish() {
+      Object.entries(htmlTranslations).forEach(([selector, html]) => {
+        document.querySelectorAll(selector).forEach((element) => {
+          element.innerHTML = html;
+        });
+      });
+
+      Object.entries(codeTranslations).forEach(([selector, text]) => {
+        document.querySelectorAll(selector).forEach((element) => {
+          element.textContent = text;
+        });
+      });
+
+      document.querySelectorAll("body *").forEach((element) => {
+        if (element.children.length || element.closest("pre") || element.classList.contains("step-number")) return;
+        const key = normalizeText(element.textContent);
+        if (textTranslations.has(key)) {
+          element.textContent = textTranslations.get(key);
+        }
+      });
+    }
+
+    function setLanguage(language) {
+      currentLanguage = language;
+      restoreRussian();
+
+      if (language === "en") applyEnglish();
+
+      document.documentElement.lang = language;
+      document.title = language === "en"
+        ? "Codex, VS Code, and Opencode Setup Guide"
+        : "Инструкция по настройке Codex, VS Code и Opencode";
+
+      document.querySelector(".language-switch")?.setAttribute(
+        "aria-label",
+        language === "en" ? "Language selection" : "Выбор языка"
+      );
+
+      languageButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.lang === language);
+      });
+
+      saveLanguagePreference(language);
+    }
+
+    function saveLanguagePreference(language) {
+      document.documentElement.dataset.language = language;
+    }
+
+    function getSavedLanguagePreference() {
+      return null;
+    }
 
     async function copyText(text) {
       if (navigator.clipboard && window.isSecureContext) {
@@ -1657,6 +1914,15 @@ gpt-5.4</pre>
       document.body.removeChild(area);
     }
 
+    captureOriginals();
+    setLanguage(getSavedLanguagePreference() === "en" ? "en" : "ru");
+
+    languageButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setLanguage(button.dataset.lang);
+      });
+    });
+
     copyButtons.forEach((button) => {
       button.addEventListener("click", async () => {
         const targetId = button.getAttribute("data-copy-target");
@@ -1667,10 +1933,10 @@ gpt-5.4</pre>
 
         try {
           await copyText(target.textContent);
-          button.textContent = "Скопировано";
+          button.textContent = uiLabels[currentLanguage].copied;
           button.classList.add("copied");
         } catch (error) {
-          button.textContent = "Ошибка";
+          button.textContent = uiLabels[currentLanguage].error;
         }
 
         setTimeout(() => {
