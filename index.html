@@ -1355,6 +1355,8 @@ claude-haiku-4-5</pre>
     const balanceSubmit = document.getElementById("balance-submit");
     const balanceStatus = document.getElementById("balance-status");
     const balanceResult = document.getElementById("balance-result");
+    const balanceApiEndpoint = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev/api/check-balance";
+    const localBalanceApiEndpoint = "api/check-balance.php";
     const keyPlaceholder = "ВАШ_API_КЛЮЧ";
     let currentLanguage = "ru";
 
@@ -1627,8 +1629,18 @@ claude-haiku-4-5</pre>
     async function checkBalance(apiKey) {
       if (window.location.protocol === "file:") {
         throw new Error(currentLanguage === "en"
-          ? "Open the page through a PHP server, not directly from the file"
-          : "Откройте страницу через PHP-сервер, а не напрямую из файла");
+          ? "Open the page through GitHub Pages, a PHP server, or the local Node server"
+          : "Откройте страницу через GitHub Pages, PHP-сервер или локальный Node-сервер");
+      }
+
+      const endpoint = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+        ? localBalanceApiEndpoint
+        : balanceApiEndpoint;
+
+      if (endpoint.includes("YOUR-WORKER-NAME")) {
+        throw new Error(currentLanguage === "en"
+          ? "Cloudflare Worker URL is not configured yet"
+          : "URL Cloudflare Worker еще не настроен");
       }
 
       const controller = new AbortController();
@@ -1636,7 +1648,7 @@ claude-haiku-4-5</pre>
       let response;
 
       try {
-        response = await fetch("api/check-balance.php", {
+        response = await fetch(endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
