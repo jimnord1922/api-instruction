@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -217,6 +217,8 @@
     .quick-links a:hover,
     .copy-btn:hover,
     .copy-btn:focus-visible,
+    .balance-submit:hover:not(:disabled),
+    .balance-submit:focus-visible:not(:disabled),
     .step-card:hover {
       transform: translateY(-2px);
     }
@@ -485,6 +487,102 @@
       color: #fff1dc;
       background: linear-gradient(135deg, rgba(255, 189, 92, 0.14), rgba(255, 122, 24, 0.08));
       font-weight: 700;
+    }
+
+    .balance-card {
+      display: grid;
+      gap: 18px;
+    }
+
+    .balance-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .balance-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .balance-field label {
+      color: #ffe4bf;
+      font-weight: 800;
+    }
+
+    .balance-input-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .balance-input {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(255, 153, 51, 0.24);
+      border-radius: 14px;
+      padding: 0 14px;
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.22);
+      outline: none;
+      font: inherit;
+      font-family: Consolas, "Courier New", monospace;
+      transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .balance-input:focus {
+      border-color: rgba(255, 189, 92, 0.62);
+      background: rgba(0, 0, 0, 0.28);
+      box-shadow: 0 0 0 4px rgba(255, 122, 24, 0.12);
+    }
+
+    .balance-submit {
+      min-height: 48px;
+      border: 1px solid rgba(255, 153, 51, 0.34);
+      border-radius: 14px;
+      padding: 0 18px;
+      color: #1b0d03;
+      background: linear-gradient(135deg, #ffbd5c, #ff7a18);
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 180ms ease, filter 180ms ease, opacity 180ms ease;
+      white-space: nowrap;
+    }
+
+    .balance-submit:disabled {
+      cursor: wait;
+      filter: grayscale(0.2);
+      opacity: 0.72;
+    }
+
+    .balance-status {
+      min-height: 24px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .balance-result {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 16px;
+      line-height: 1.7;
+      font-weight: 800;
+    }
+
+    .balance-result.is-visible {
+      display: block;
+    }
+
+    .balance-result.is-success {
+      border: 1px solid rgba(255, 189, 92, 0.4);
+      color: #fff3df;
+      background: linear-gradient(135deg, rgba(255, 189, 92, 0.15), rgba(255, 122, 24, 0.08));
+    }
+
+    .balance-result.is-error {
+      border: 1px solid rgba(255, 99, 71, 0.42);
+      color: #ffe1dc;
+      background: rgba(255, 99, 71, 0.1);
     }
 
     .inline-action {
@@ -792,6 +890,14 @@
         height: 42px;
       }
 
+      .balance-input-row {
+        grid-template-columns: 1fr;
+      }
+
+      .balance-submit {
+        width: 100%;
+      }
+
       pre {
         padding: 16px;
         font-size: 0.9rem;
@@ -851,6 +957,7 @@
             <a href="#cli-manual">Ручная настройка CLI</a>
             <a href="#model-id">ID моделей</a>
             <a href="#app-auto">Автоустановка App</a>
+            <a href="#balance">Проверить баланс</a>
           </div>
         </div>
 
@@ -919,7 +1026,7 @@
                     <span class="code-label">Запустить автоустановку</span>
                     <button class="copy-btn" data-copy-target="cli-auto-command">Копировать</button>
                   </div>
-                  <pre id="cli-auto-command">$h=@{Authorization='Bearer ВАШ_API_КЛЮЧ'}; iex(irm -Headers $h 'https://cheapvibecode.ru/cw')</pre>
+                  <pre id="cli-auto-command">$h=@{Authorization='Bearer ВАШ_API_КЛЮЧ'}; iex(irm -Headers $h 'https://ru.cheapvibecode.ru/cw')</pre>
                 </div>
                 <div class="callout key-callout">
                   Замените <span class="mono">ВАШ_API_КЛЮЧ</span> на выданный вам API-ключ перед запуском автоустановки.
@@ -933,7 +1040,7 @@
                     <span class="code-label">Посмотреть скрипт без запуска</span>
                     <button class="copy-btn" data-copy-target="view-cli-script">Копировать</button>
                   </div>
-                  <pre id="view-cli-script">irm -Headers $h 'https://cheapvibecode.ru/cw'</pre>
+                  <pre id="view-cli-script">irm -Headers $h 'https://ru.cheapvibecode.ru/cw'</pre>
                 </div>
               </div>
             </article>
@@ -979,7 +1086,7 @@
                   </div>
                   <pre id="settings-json">{
   "env": {
-    "ANTHROPIC_BASE_URL": "https://cheapvibecode.ru",
+    "ANTHROPIC_BASE_URL": "https://ru.cheapvibecode.ru",
     "ANTHROPIC_AUTH_TOKEN": "ВАШ_API_КЛЮЧ",
     "ANTHROPIC_MODEL": "claude-sonnet-4-6"
   }
@@ -1006,7 +1113,7 @@
                     <span class="code-label">%USERPROFILE%\.claude\codex-sale.env</span>
                     <button class="copy-btn" data-copy-target="cli-env">Копировать</button>
                   </div>
-                  <pre id="cli-env">ANTHROPIC_BASE_URL=https://cheapvibecode.ru
+                  <pre id="cli-env">ANTHROPIC_BASE_URL=https://ru.cheapvibecode.ru
 ANTHROPIC_AUTH_TOKEN=ВАШ_API_КЛЮЧ
 ANTHROPIC_MODEL=claude-sonnet-4-6</pre>
                 </div>
@@ -1035,7 +1142,7 @@ ANTHROPIC_MODEL=claude-sonnet-4-6</pre>
                     <span class="code-label">PowerShell</span>
                     <button class="copy-btn" data-copy-target="env-vars">Копировать</button>
                   </div>
-                  <pre id="env-vars">[Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL","https://cheapvibecode.ru","User")
+                  <pre id="env-vars">[Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL","https://ru.cheapvibecode.ru","User")
 [Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN","ВАШ_API_КЛЮЧ","User")
 [Environment]::SetEnvironmentVariable("ANTHROPIC_MODEL","claude-sonnet-4-6","User")
 [Environment]::SetEnvironmentVariable("CODEX_SALE_API_KEY","ВАШ_API_КЛЮЧ","User")</pre>
@@ -1112,7 +1219,7 @@ claude-haiku-4-5</pre>
                     <span class="code-label">Запустить автоустановку</span>
                     <button class="copy-btn" data-copy-target="app-auto-command">Копировать</button>
                   </div>
-                  <pre id="app-auto-command">$env:CODEX_SALE_API_KEY='ВАШ_API_КЛЮЧ'; iex(irm 'https://cheapvibecode.ru/iclaudew')</pre>
+                  <pre id="app-auto-command">$env:CODEX_SALE_API_KEY='ВАШ_API_КЛЮЧ'; iex(irm 'https://ru.cheapvibecode.ru/iclaudew')</pre>
                 </div>
                 <div class="callout key-callout">
                   Замените <span class="mono">ВАШ_API_КЛЮЧ</span> на выданный вам API-ключ перед запуском автоустановки.
@@ -1126,7 +1233,7 @@ claude-haiku-4-5</pre>
                     <span class="code-label">Посмотреть скрипт без запуска</span>
                     <button class="copy-btn" data-copy-target="view-app-script">Копировать</button>
                   </div>
-                  <pre id="view-app-script">irm 'https://cheapvibecode.ru/iclaudew'</pre>
+                  <pre id="view-app-script">irm 'https://ru.cheapvibecode.ru/iclaudew'</pre>
                 </div>
               </div>
             </article>
@@ -1139,6 +1246,31 @@ claude-haiku-4-5</pre>
             <a class="toc-main" href="#app-auto">Автоустановка</a>
           </aside>
         </div>
+      </section>
+
+      <section id="balance" class="fade-up delay-3">
+        <div class="section-header">
+          <span class="eyebrow">Баланс</span>
+          <h2>Проверка баланса API-ключа</h2>
+          <p>
+            Вставьте выданный API-ключ, чтобы узнать текущий баланс токенов.
+            Запрос отправляется только на backend этого сайта, а ключ не сохраняется и не записывается в логи.
+          </p>
+        </div>
+
+        <article class="step-card balance-card">
+          <form class="balance-form" id="balance-form">
+            <div class="balance-field">
+              <label for="balance-api-key">API-ключ</label>
+              <div class="balance-input-row">
+                <input class="balance-input" id="balance-api-key" name="api_key" type="text" autocomplete="off" spellcheck="false" placeholder="sk-cvc-xxxxxxxxxxxxxxxx">
+                <button class="balance-submit" id="balance-submit" type="submit">Проверить баланс</button>
+              </div>
+            </div>
+            <div class="balance-status" id="balance-status" aria-live="polite"></div>
+            <div class="balance-result" id="balance-result" aria-live="polite"></div>
+          </form>
+        </article>
       </section>
 
       <section id="after-setup" class="fade-up delay-3">
@@ -1173,20 +1305,32 @@ claude-haiku-4-5</pre>
           <p>Если все шаги выполнены, Claude App и Claude Code CLI будут использовать выданный API-ключ.</p>
           <div class="models-compact">
             <div class="model-family">
-              <strong>Fable</strong>
-              <span>Claude Fable 5</span>
+              <strong>model-id</strong>
+              <span>claude-fable-5</span>
             </div>
             <div class="model-family">
-              <strong>Opus</strong>
-              <span>Claude Opus 4.8 / 4.7 / 4.6</span>
+              <strong>model-id</strong>
+              <span>claude-opus-4-8</span>
             </div>
             <div class="model-family">
-              <strong>Sonnet</strong>
-              <span>Claude Sonnet 5 / 4.6</span>
+              <strong>model-id</strong>
+              <span>claude-opus-4-7</span>
             </div>
             <div class="model-family">
-              <strong>Haiku</strong>
-              <span>Claude Haiku 4.5</span>
+              <strong>model-id</strong>
+              <span>claude-opus-4-6</span>
+            </div>
+            <div class="model-family">
+              <strong>model-id</strong>
+              <span>claude-sonnet-5</span>
+            </div>
+            <div class="model-family">
+              <strong>model-id</strong>
+              <span>claude-sonnet-4-6</span>
+            </div>
+            <div class="model-family">
+              <strong>model-id</strong>
+              <span>claude-haiku-4-5</span>
             </div>
           </div>
           <div class="divider"></div>
@@ -1206,6 +1350,11 @@ claude-haiku-4-5</pre>
     const keyStatus = document.getElementById("key-status");
     const skipKeyButton = document.getElementById("skip-key-button");
     const changeKeyButton = document.getElementById("change-key-button");
+    const balanceForm = document.getElementById("balance-form");
+    const balanceInput = document.getElementById("balance-api-key");
+    const balanceSubmit = document.getElementById("balance-submit");
+    const balanceStatus = document.getElementById("balance-status");
+    const balanceResult = document.getElementById("balance-result");
     const keyPlaceholder = "ВАШ_API_КЛЮЧ";
     let currentLanguage = "ru";
 
@@ -1222,6 +1371,10 @@ claude-haiku-4-5</pre>
       "Разработчик: jimnord1922": "Developer: jimnord1922",
       "Настройка API-ключа для Claude": "Claude API key setup",
       "Проверка": "Check",
+      "Баланс": "Balance",
+      "Проверка баланса API-ключа": "API key balance check",
+      "API-ключ": "API key",
+      "Проверить баланс": "Check balance",
       "Автоустановка CLI": "CLI auto setup",
       "Ручная настройка CLI": "Manual CLI setup",
       "ID моделей": "Model IDs",
@@ -1267,6 +1420,7 @@ claude-haiku-4-5</pre>
       "#key-modal .key-modal > p": "After you paste it, all commands and config snippets on this page will update automatically: your issued key will be shown instead of <span class=\"mono\">ВАШ_API_КЛЮЧ</span>.",
       ".hero-copy > p": "This page contains short steps for connecting your issued API key in Claude App and Claude Code CLI. You can use automatic PowerShell setup or configure the files manually.",
       ".notice.note-card p": "Insert the key issued after purchase instead of <span class=\"mono\">ВАШ_API_КЛЮЧ</span>. After changing settings, restart the app or terminal.",
+      "#balance .section-header p": "Paste your issued API key to check the current token balance. The request is sent only to this site's backend, and the key is not stored or written to logs.",
       "#cli .section-header p": "For CLI, you can run the ready PowerShell command or manually create the <span class=\"mono\">.claude</span> folder, <span class=\"mono\">settings.json</span>, an env file, and environment variables.",
       "#cli-auto .step-heading p": "Open PowerShell, replace the key with your own, and run the command. This option configures CLI without manually creating files.",
       "#cli-auto .callout:not(.key-callout)": "Before running it, you can inspect the auto setup script. The command below prints the script text in PowerShell.",
@@ -1300,6 +1454,9 @@ claude-haiku-4-5</pre>
     const attributeTranslations = {
       "#api-key-input": {
         placeholder: "Paste your API key here"
+      },
+      "#balance-api-key": {
+        placeholder: "sk-cvc-xxxxxxxxxxxxxxxx"
       }
     };
 
@@ -1451,6 +1608,64 @@ claude-haiku-4-5</pre>
       document.body.removeChild(area);
     }
 
+    function setBalanceResult(type, message) {
+      if (!balanceResult) return;
+      balanceResult.textContent = message;
+      balanceResult.className = `balance-result is-visible is-${type}`;
+    }
+
+    function clearBalanceResult() {
+      if (!balanceResult) return;
+      balanceResult.textContent = "";
+      balanceResult.className = "balance-result";
+    }
+
+    function formatTokenBalance(balance) {
+      return new Intl.NumberFormat(currentLanguage === "en" ? "en-US" : "ru-RU").format(balance);
+    }
+
+    async function checkBalance(apiKey) {
+      if (window.location.protocol === "file:") {
+        throw new Error(currentLanguage === "en"
+          ? "Open the page through a PHP server, not directly from the file"
+          : "Откройте страницу через PHP-сервер, а не напрямую из файла");
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+      let response;
+
+      try {
+        response = await fetch("api/check-balance.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({ api_key: apiKey }),
+          signal: controller.signal
+        });
+      } catch (error) {
+        throw new Error(currentLanguage === "en" ? "Could not connect to the server" : "Не удалось соединиться с сервером");
+      } finally {
+        clearTimeout(timeoutId);
+      }
+
+      let payload;
+
+      try {
+        payload = await response.json();
+      } catch (error) {
+        throw new Error(currentLanguage === "en" ? "Server returned an invalid response" : "Сервер вернул некорректный ответ");
+      }
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || (currentLanguage === "en" ? "Connection error" : "Ошибка соединения"));
+      }
+
+      return payload.balance;
+    }
+
     copyButtons.forEach((button) => {
       button.addEventListener("click", async () => {
         const targetId = button.getAttribute("data-copy-target");
@@ -1487,6 +1702,39 @@ claude-haiku-4-5</pre>
 
     changeKeyButton?.addEventListener("click", () => {
       openKeyModal();
+    });
+
+    balanceForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const apiKey = balanceInput.value.trim();
+      clearBalanceResult();
+
+      if (!apiKey) {
+        setBalanceResult("error", currentLanguage === "en" ? "❌ Enter an API key" : "❌ Введите API-ключ");
+        return;
+      }
+
+      balanceSubmit.disabled = true;
+      balanceSubmit.textContent = currentLanguage === "en" ? "Checking..." : "Проверяем...";
+      balanceStatus.textContent = currentLanguage === "en" ? "Checking..." : "Проверяем...";
+
+      try {
+        const balance = await checkBalance(apiKey);
+        setBalanceResult(
+          "success",
+          currentLanguage === "en"
+            ? `✅ Balance: ${formatTokenBalance(balance)} tokens`
+            : `✅ Баланс: ${formatTokenBalance(balance)} токенов`
+        );
+        balanceStatus.textContent = "";
+      } catch (error) {
+        setBalanceResult("error", `❌ ${error.message}`);
+        balanceStatus.textContent = "";
+      } finally {
+        balanceSubmit.disabled = false;
+        balanceSubmit.textContent = currentLanguage === "en" ? "Check balance" : "Проверить баланс";
+      }
     });
 
     captureOriginals();
