@@ -293,6 +293,12 @@
       line-height: 1.45;
     }
 
+    .models-list .model-family {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 12px;
+      align-items: center;
+    }
+
     .model-family {
       display: grid;
       gap: 5px;
@@ -310,6 +316,19 @@
     .model-family span {
       color: var(--muted);
       font-size: 0.94rem;
+    }
+
+    .models-list .model-family strong,
+    .models-list .model-family span:not(.model-rate) {
+      grid-column: 1;
+    }
+
+    .models-list .model-rate {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      justify-self: end;
+      color: #ffe3bd;
+      font-weight: 800;
     }
 
     .models-compact {
@@ -969,18 +988,22 @@
                 <div class="model-family">
                   <strong>Fable</strong>
                   <span>Claude Fable 5</span>
+                  <span class="model-rate">x10</span>
                 </div>
                 <div class="model-family">
                   <strong>Opus</strong>
                   <span>Claude Opus 4.8 / 4.7 / 4.6</span>
+                  <span class="model-rate">x5</span>
                 </div>
                 <div class="model-family">
                   <strong>Sonnet</strong>
                   <span>Claude Sonnet 5 / 4.6</span>
+                  <span class="model-rate">x2</span>
                 </div>
                 <div class="model-family">
                   <strong>Haiku</strong>
                   <span>Claude Haiku 4.5</span>
+                  <span class="model-rate">x0.9</span>
                 </div>
               </div>
             </div>
@@ -1103,7 +1126,7 @@
               <div class="step-top">
                 <span class="step-number">3</span>
                 <div class="step-heading">
-                  <h3>Создайте cheapvibecode.env</h3>
+                  <h3>Создайте codex-sale.env</h3>
                   <p>В той же папке создайте файл <span class="mono">codex-sale.env</span> и вставьте содержимое ниже.</p>
                 </div>
               </div>
@@ -1396,7 +1419,7 @@ claude-haiku-4-5</pre>
       "Создайте папку .claude": "Create the .claude folder",
       "Путь": "Path",
       "Создайте settings.json": "Create settings.json",
-      "Создайте cheapvibecode.env": "Create cheapvibecode.env",
+      "Создайте codex-sale.env": "Create codex-sale.env",
       "Добавьте переменные окружения": "Add environment variables",
       "Чтобы переключить используемую модель в CLI, укажите нужный ID в конфиге.": "To switch the model used in CLI, put the required ID into the config.",
       "PowerShell": "PowerShell",
@@ -1407,6 +1430,8 @@ claude-haiku-4-5</pre>
       "3. codex-sale.env": "3. codex-sale.env",
       "4. Переменные": "4. Variables",
       "APP": "APP",
+      "Настройка Claude App": "Claude App setup",
+      "Автоустановка Claude App": "Claude App auto setup",
       "Создайте папку и settings.json": "Create the folder and settings.json",
       "Создайте codex-sale-app.env": "Create codex-sale-app.env",
       "2. app.env": "2. app.env",
